@@ -1,0 +1,48 @@
+
+
+0. aws ecr 
+   ㄱ. virtual-front  
+   ㄴ. virtual-backend
+
+1. aws-ecr 생성 
+557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-front
+557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-backend
+
+
+
+2.virtlet-front
+docker build -t 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-front:1.0 .
+
+docker images
+docker run -i 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-front:1.0
+curl 172.17.0.2:80
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 557269744548.dkr.ecr.us-east-2.amazonaws.com
+docker push 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-front:1.0
+
+3. virtlet-backend
+
+git config --local user.name "iam-skycloud"
+git config --local user.email "love7310@gmail.com"
+
+git clone ssh://git-codecommit.us-east-2.amazonaws.com/v1/repos/virtual-backend
+
+docker build -t 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-backend:1.0 .
+docker run -i 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-backend:1.0
+
+docker run -it 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-backend:1.0
+docker push 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-backend:1.0
+
+
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 557269744548.dkr.ecr.us-east-2.amazonaws.com
+
+docker push 557269744548.dkr.ecr.us-east-2.amazonaws.com/virtlet-backend:1.0
+
+
+4. 
+
+
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 557269744548.dkr.ecr.us-east-2.amazonaws.com
+
+
+
+AWSCodePipelineServiceRole-us-east-2-virtlet-front-all

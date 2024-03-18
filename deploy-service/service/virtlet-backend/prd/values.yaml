@@ -1,0 +1,563 @@
+imageTag: &imageTag c1592e1
+###########################################
+# 맨윗줄의 imageTag 값만 변경하면 아래의 image.tag 값이 변경됨 
+###########################################
+
+
+
+###########################################
+############ Common / General     #########
+###########################################
+
+appName: &appName virtlet-backend
+namespace: default
+
+   #  namespace admin 수동생성 2개의 서비스 지정시 helm 삭제로 인한 서비스 중지
+
+
+
+###########################################
+############ Deployment / Rollout #########
+###########################################
+
+# dployment / rollout
+enable_Rollout_deploy: false
+
+# 주의 HPA Min  동시 사용시 HPA Min <= replicaCount
+# HPA Min > replicaCount   HPA 조건이 우선 적용됨...
+replicaCount: 2   
+# 배포할 노드 그룹 node Group 
+role: &roleValue ops-operator-havy #app-front-cpu
+
+
+# deployment or rollout labels
+# 처음 셋팅후 k8s 자체에서 label 추가,삭제수정 안됨.  
+# 삭제하거나 이름을 변경후 마이그레이션
+# UPGRADE FAILED: cannot patch..  field is immutable
+de_ro_labels: {}
+   #tags.datadoghq.com/env: "prd"
+   #tags.datadoghq.com/service: "GenesisGateway"   
+
+   #*******************************************#
+   #*********** container[0] 1대기준  *******#**#
+   #*******************************************#
+image:
+  repository: love7310/virtlet-datadoc
+  tag: *imageTag
+
+  pullPolicy: IfNotPresent  # Always
+  
+
+imagePullSecrets: []
+
+## limitRance 를 미적용시 필수로 넣어줘야 함.
+## limitRance 를 적용하면 생략가능
+resources: {}
+  #! limits:
+  #!   cpu: 100m
+  #!   memory: 128Mi
+  #! requests:
+  #!   cpu: 100m
+  #!   memory: 128Mi
+
+
+
+readinessProbedataValue:   # {}
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    successThreshold: 1
+    httpGet:
+      port: 80
+      path: /
+    timeoutSeconds: 3
+
+startupProbedataValue: {}
+  #! startupProbe:
+  #!   failureThreshold: 3
+  #!   initialDelaySeconds: 15
+  #!   periodSeconds: 5
+  #!   successThreshold: 1
+  #!   httpGet:
+  #!     port: 80
+  #!     path: /
+  #!   timeoutSeconds: 3    
+
+livenessProbedataValue:  #{}
+  livenessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 20
+    periodSeconds: 5
+    successThreshold: 1
+    httpGet:
+      port: 80
+      path: /
+    timeoutSeconds: 3
+
+
+container_port: 80
+
+envDataValue:
+  env: 
+  - name: DD_ENV
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['tags.datadoghq.com/env']
+  - name: DD_SERVICE
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['tags.datadoghq.com/service']
+  - name: DD_PROFILING_ENABLED
+    value: "true"
+  - name: DD_LOGS_INJECTION
+    value: "true"
+  - name: DD_APPSEC_ENABLED
+    value: "true"
+  - name: DD_TRACE_SAMPLE_RATE
+    value: "1"
+  - name: DD_AGENT_HOST
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+
+commandDataValue: {}
+  #! command: ["echo"]
+  #! args: ["$(GREETING) $(HONORIFIC) $(NAME)"]    ######  deploy-rollout node 
+
+nodeSelectorDataValue: {}
+  # affinity 를 사용하세요 nodeSelector는 affinity보다 우선순위라 Pod가 순차적으로 1개의 node에 몰림.
+  #! nodeSelector: 
+  #!   role: app-front-cpu
+
+
+
+#tolerations: []
+
+affinity:
+  nodeAffinity:
+    # 무조건 적용
+    requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: role
+            operator: In
+            values:
+            - *roleValue        
+    # 옵션 적용
+    preferredDuringSchedulingIgnoredDuringExecution:    
+    #! - weight: 90
+    #!   preference:
+    #!     matchExpressions:        
+    #!     - key: role
+    #!       operator: In
+    #!       values:
+    #!       - *roleValue        
+    - weight: 60  # 1-100
+      preference:
+        matchExpressions:        
+        - key: kubernetes.io/os
+          operator: In
+          values:
+          - linux       
+               
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 80
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: "app.kubernetes.io/name"
+            operator: In
+            values:
+            - *appName
+        topologyKey: 
+          kubernetes.io/hostname
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 70
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: "app.kubernetes.io/name"
+            operator: In
+            values:
+            - *appName
+        topologyKey: 
+          topology.kubernetes.io/zone          
+
+
+
+
+podAnnotations: {}
+
+containerSecurityContextDataValue: 
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true  
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+      - all
+
+
+securityContextDataValue:
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+
+
+    # pod sepc  에서는 미 지원
+    # allowPrivilegeEscalation: false
+    # privileged: false
+    # readOnlyRootFilesystem: true
+    # capabilities:
+    #   drop:
+    #   - all
+
+podLifeCycleDataValue: {}
+  #! lifecycle:
+  #!   # option
+  #!   postStart:
+  #!     exec:
+  #!       command: ["/bin/sh", "-c", "echo Hello from the postStart "]
+  #!   # option
+  #!   preStop:
+  #!     exec:
+  #!       command: ["/bin/sh","-c","nginx -s quit; while kill -TERM -1 nginx; do sleep 10; done"]
+  #!       #command: ["/usr/sbin/nginx","-s","quit"]
+        
+
+  # 추천하는 방법은 먼저 kill -TERM PID 나 kill -INT PID 같이 종료를 의미하는 signal 을 여러 번 전송해 주는 것
+  # kill -9 
+  # ex) https://nodejs.org/api/child_process.html#child_process_subprocess_kill_signal 코딩시 os sigterm kill관련 
+  # 프로그램 코딩 필요.. SIGTERM 신호 를 보냄으로써 스스로를 죽이도록 친절하게 요청할 것 입니다. 강제로 죽이기 전에 청소할 기회를 갖게 됩니다.
+  # 그러나 예외처리가 없을시 . SIGKILL을 사용하면 즉시 프로세스를 종료할 수 있습니다.
+
+terminationGPSDataValue:
+  terminationGracePeriodSeconds:  20
+
+podVolumesDataValue: 
+  # volumeMounts:
+  # # emptyDir ex
+  # - name: cache-volume
+  #   mountPath: /home/node/data/work
+
+
+  # # hostPath ex  
+  # - name: test-volume
+  #   mountPath: /home/node/data/work2
+  
+   
+  # # pvc ex 
+  # - name: cloud-storage
+  #   mountPath: /home/node/ebs
+
+
+
+
+   #*******************************************#
+   #*********** volumes Deploy All Scope ******#
+   #*******************************************#
+
+volumes_enable:
+#  podVolumesDataValue 과 같이 사용
+  enabled: false
+
+  dataValue: {}
+    # volumes:
+    # # empthyDir ex
+    # - name: cache-volume
+    #   emptyDir: 
+    #     sizeLimit: 5Mi
+
+
+    # # hostPath ex
+    # - name: test-volume
+    #   hostPath:      
+    #     path: /home/ec2-user/  #node/workPath2  // node Path 
+    #     ##  보안에 유의 worker node에 기본적인 directory는 있어야 함. 
+    #     ##  ec2_user 는 있지만 ec3_user는 없으므로 생성이 안됨
+    #     ##  
+    #     type: Directory
+
+    # # pvc ex  pvc value yaml values enable
+    # - name: cloud-storage
+    #   persistentVolumeClaim:
+    #     claimName: *appName  # 
+    # ## < values.yaml top appName => reuse  
+
+
+   #*******************************************#
+   #*********** only argo option     **********#
+   #*******************************************#
+
+strategy:
+  bluegreen_enabled:
+    enabled: true    
+    autoPromotionEnabled: false  # autodeploy : dev => true prod =>false
+
+###########################################
+############## Persist Volume Clame #######
+###########################################    
+
+ebs_pvc:
+# securityContextDataValue or containerSecurityContextDataValue
+# runAsUser: 1000  pod volume  권한 자동적용됨
+  enabled: false
+  storageSize: 1Gi
+
+
+efs_pvc:
+  enabled: false
+  storageSize: 1Gi
+
+
+###########################################
+################## ConfigMap  #############
+###########################################  
+
+
+configMap:
+  enabled: false
+  configMapDataValue: {}
+    #! data:
+    #!   # property-like keys; each key maps to a simple value
+    #!   player_initial_lives: "3"
+    #!   ui_properties_file_name: "user-interface.properties"
+
+    #!   # file-like keys
+    #!   game.properties: |
+    #!     enemy.types=aliens,monsters
+    #!     player.maximum-lives=5    
+    #!   user-interface.properties: |
+    #!     color.good=purple
+    #!     color.bad=yellow
+    #!     allow.textmode=true  
+
+
+
+
+
+###########################################
+##################   Secret   #############
+###########################################  
+
+
+secret:
+  enabled: false
+  ## type까지 포함 ##
+  secretDataValue:
+    #! data:
+    #!   #  encryption least base64 obligation
+    #!   #  
+    #!   username: YWRtaW4=   
+    #!   password: MWYyZDFlMmU2N2Rm
+    #! type: Opaque  
+
+
+
+
+
+###########################################
+############## External Secret ############
+###########################################  
+
+## 
+
+externalSecret:
+  enabled: false
+
+  ## backendType 까지 포함 ##
+  exSecretDataValue: {}
+    #! data:
+    #! - key: kubernetes/external-secret/web
+    #!   name: web.webdb.host
+    #!   property: web.webdb.host
+    #! - key: kubernetes/external-secret/web
+    #!   name: web.webdb.user
+    #!   property: web.webdb.user
+    #! - key: kubernetes/external-secret/web
+    #!   name: web.webdb.password
+    #!   property: web.webdb.password  
+    #! backendType: secretsManager  
+
+
+
+
+
+
+###########################################
+############ serviceAccount  ##############
+###########################################
+
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the name template
+  name: *appName
+  
+
+
+###########################################
+################## service  ###############
+###########################################
+
+service:
+  type: ClusterIP #ClusterIP, NodePort
+  port: 80
+  targetPort: http
+  
+
+
+###########################################
+################## ingress  ###############
+###########################################
+
+
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations:   
+    # must 
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+    #alb.ingress.kubernetes.io/subnets:                      "subnet-04dc6f4ec69d23e08,subnet-0b3e85f7f2f481965"
+    ### target-type  option
+    alb.ingress.kubernetes.io/target-type:                  "ip"              # must  ip  not instance  instance
+    #alb.ingress.kubernetes.io/target-type:                  "instance"       # must  ip  not instance  무조건 nodePort service
+    ### scheme option                                                         ## must 
+    alb.ingress.kubernetes.io/scheme:                       "internet-facing" # must  internet-facing not internal 
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:962524913451:certificate/6d2cb17d-2b37-46f9-a68b-51a6c3b86859
+    # --- tage 명지정 alb.ingress.kubernetes.io/tags:                         "Name:k8s-ingress-origin,Make:helm"
+
+    
+    ######################## person 옵션    #######################
+
+    # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.1/guide/ingress/annotations/
+    #한개의 LoadBalancer에  여러개의  Ingress 를 붙여 사용시 group name, order 바꾸어서 사용해야 함.
+    # 인프라 담당장에게 문의하고 숫자를 올려저야 함.
+    alb.ingress.kubernetes.io/group.name:                   "virt-datadog"        ## must
+    alb.ingress.kubernetes.io/group.order:                  "204"            # 1- 1000
+    #! alb.ingress.kubernetes.io/load-balancer-name:           "k8s-lbwork-63e4b610cb"
+
+     
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "15"
+    alb.ingress.kubernetes.io/healthcheck-path:             "/"
+    #alb.ingress.kubernetes.io/healthcheck-path:             "/actuator/health/liveness"
+    alb.ingress.kubernetes.io/healthcheck-port:             "traffic-port"   # 숫자(정수) | traffic-port
+    alb.ingress.kubernetes.io/healthcheck-protocol:         "HTTP"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds:  "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count:      "2"
+    #alb.ingress.kubernetes.io/load-balancer-name:           "genesis-gateway-alb"
+    alb.ingress.kubernetes.io/success-codes:                "200"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count:    "2"
+         
+
+    #추가로 다음 속성도 고려  NLB
+
+    # Network Load Balancer 및 Gateway Load Balancer에서 지원됩니다.
+    #load_balancing.cross_zone.enabled- 교차 영역 로드 밸런싱이 활성화되었는지 여부를 나타냅니다. 가능한 값은 true및 false입니다. 기본값은 false입니다.
+    
+    # Route53 사용시 자동지정으로 만들어줌.
+    #external-dns.alpha.kubernetes.io/hostname:              "node-sky.virtlet.xyz"   
+    #service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true    
+    #service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: deregistration_delay.connection_termination.enabled=true, preserve_client_ip.enabled=true, deregistration_delay.timeout_seconds=120    
+    
+
+  ## host 도메인명은 꼭 지정해야 함.  아래는 예시       
+  hosts:
+    - host: virtlet-datadog.virtlet.xyz
+      paths:
+        - path: /*
+          pathType: ImplementationSpecific
+          preView : ""
+    - host: virtlet-datadog-preview.virtlet.xyz
+      paths:
+        - path: /*
+          pathType: ImplementationSpecific
+          preView : "-preview"
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+
+###########################################
+##################    HPA  ################
+###########################################
+
+autoscaling:
+  enabled: true
+
+  minReplicas: 2 # replicaCount 도 같이 최소로 맞혀주어야 함. 
+  maxReplicas: 10
+
+  scaleDown:
+    stabilizationWindowSeconds: 600
+    policies_pod_value: 1  
+    policies_percent_value: 10
+    periodSeconds: 120
+
+  scaleUp:
+    stabilizationWindowSeconds: 30
+    policies_pod_value: 2
+    policies_percent_value: 200
+    periodSeconds: 5
+
+  cpu_type:     
+    enable: true
+    averageUtilization: 40    
+     
+  
+  memory_type:
+    enable: true
+    averageUtilization: 80
+
+  
+
+###########################################
+################## limitRange  ################
+###########################################
+
+
+limitRange:
+  enabled: false
+
+  ##  ##
+  limitRangeDataValue: {}
+    #! limits:
+    #! - type: Container 
+    #!   ## limitRange를 사용하면 resource를 미사용하여도 default로 적용
+    #!   ## pod, pvc 사용을을 넘어서면 Pod 배포되지 않는다. 
+    #!   default:
+    #!     cpu: 125m 
+    #!     memory: 256Mi              
+    #!   min:
+    #!     cpu: 125m
+    #!     memory: 128Mi       
+    #!   max:
+    #!     cpu: 1000m  
+    #!     memory: 1024Mi 
+        
+    #! - type: Pod      
+    #!   min:
+    #!     cpu: 100m #2
+    #!     memory: 128Mi #2Gi
+    #!   max: # max and min define the limit range
+    #!     cpu: 1000m # 3
+    #!     memory: 1024Mi  #4Gi
+
+    #! - type: PersistentVolumeClaim
+    #!   max:
+    #!     storage: 10Gi
+    #!   min:
+    #!     storage: 5Gi
+
+

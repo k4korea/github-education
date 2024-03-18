@@ -1,0 +1,274 @@
+apps:
+##########################################
+##           samjun-se2-op-ha01         ##
+##########################################
+  postgresql:
+    enabled: false
+    project: monitoring
+    path: charts/postgresql
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: monitoring
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  kube-prometheus-stack:
+    enabled: false
+    project: monitoring
+    path: charts/kube-prometheus-stack
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: monitoring
+    servername: samjun-se2-op-ha01
+    autoSync: null
+ 
+  loki-stack:
+    enabled: false
+    project: monitoring
+    path: charts/loki-stack
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: monitoring
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  k6-operator:
+    enabled: true
+    project: monitoring
+    path: charts/k6-operator
+    repoURL: null
+    targetRevision: null
+    namespace: k6
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  aws-cloudwatch-metrics:
+    enabled: true
+    project: monitoring
+    path: charts/aws-cloudwatch-metrics
+    repoURL: null
+    targetRevision: null
+    namespace: monitoring
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  metrics-server:
+    enabled: false
+    project: monitoring
+    path: charts/metrics-server
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: kube-system
+    servername: samjun-se2-op-ha01
+    autoSync: null    
+
+  keycloak:
+    enabled: false
+    project: addons
+    path: charts/keycloak
+    repoURL: null
+    targetRevision: null
+    valueFiles: nlb-values.yaml
+    namespace: echo-system
+    servername: samjun-se2-op-ha01
+    autoSync: null   
+  
+  external-secrets:
+    enabled: false
+    project: addons
+    path: charts/external-secrets
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: echo-system
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  jenkins:
+    enabled: false
+    project: addons
+    path: charts/jenkins
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: echo-system
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  helm-istio-bookinfo:
+    enabled: true
+    project: apps
+    path: charts/helm-istio-bookinfo
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: bookinfo
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+  helm-istio-tomcat-webwas:
+    enabled: true
+    project: apps
+    path: charts/helm-istio-tomcat-webwas
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: webwas
+    servername: samjun-se2-op-ha01
+    autoSync: null
+
+##########################################
+##           samjun-se2-sv-sl01         ##
+##########################################
+  # kube-prometheus-stack-se2:
+  #   enabled: true
+  #   project: monitoring
+  #   path: helm_monitoring/kube-prometheus-stack
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: values_app.yaml
+  #   namespace: monitoring
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # loki-stack-se2:
+  #   enabled: true
+  #   project: monitoring
+  #   path: helm_monitoring/loki-stack
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: null
+  #   namespace: monitoring
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # metrics-server-se2:
+  #   enabled: true
+  #   project: monitoring
+  #   path: charts/metrics-server
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: null
+  #   namespace: kube-system
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # ingress-nginx:
+  #   enabled: true
+  #   project: addons
+  #   path: charts/ingress-nginx
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: nlb-values.yaml
+  #   namespace: ingress-nginx
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # nginx-front-1:
+  #   enabled: false
+  #   project: apps
+  #   path: charts/nginx
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: null
+  #   namespace: apps
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # nginx-front-2:
+  #   enabled: false
+  #   project: apps
+  #   path: charts/nginx
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: null
+  #   namespace: apps
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # nginx-api:
+  #   enabled: false
+  #   project: apps
+  #   path: charts/nginx
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: nginx-api-values.yaml
+  #   namespace: apps
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # tomcat-middle-1:
+  #   enabled: false
+  #   project: apps
+  #   path: charts/tomcat
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: tomcat-middle-1-values.yaml
+  #   namespace: apps
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+  # tomcat-middle-2:
+  #   enabled: false
+  #   project: apps
+  #   path: charts/tomcat
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: tomcat-middle-2-values.yaml
+  #   namespace: apps
+  #   servername: samjun-se2-sv-sl01
+  #   autoSync: null
+
+##########################################
+##           samjun-e01-sv-sl02         ##
+##########################################
+  # kube-prometheus-stack-e01:
+  #   enabled: true
+  #   project: monitoring
+  #   path: helm_monitoring/kube-prometheus-stack
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: values_app.yaml
+  #   namespace: monitoring
+  #   servername: samjun-e01-sv-sl02
+  #   autoSync: null
+
+  # loki-stack-e01:
+  #   enabled: true
+  #   project: monitoring
+  #   path: helm_monitoring/loki-stack
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: null
+  #   namespace: monitoring
+  #   servername: samjun-e01-sv-sl02
+  #   autoSync: null
+
+  # metrics-server-e01:
+  #   enabled: true
+  #   project: monitoring
+  #   path: charts/metrics-server
+  #   repoURL: null
+  #   targetRevision: null
+  #   valueFiles: null
+  #   namespace: kube-system
+  #   servername: samjun-e01-sv-sl02
+  #   autoSync: null
+
+##########################################
+##                default               ##
+##########################################    
+default:
+  app:
+    project: null
+    path: null
+    repoURL: https://github.com/netios/devops_project_soo.git
+    targetRevision: HEAD
+    valueFiles: values.yaml
+    namespace: null
+    servername: null
+    autoSync: true

@@ -1,0 +1,137 @@
+{{- if .Values.enable_Rollout_deploy }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ include "my-test.fullname" . }}
+  labels:
+    {{- include "my-test.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{ else }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  revisionHistoryLimit: 4
+  selector:
+    matchLabels:
+      {{- include "my-test.selectorLabels" . | nindent 6 }}
+      {{- with .Values.de_ro_labels }}          
+        {{- toYaml .  | nindent 6 }}
+      {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "my-test.selectorLabels" . | nindent 8 }}
+        {{- with .Values.de_ro_labels }}          
+          {{- toYaml .  | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "my-test.serviceAccountName" . }}
+
+       # securityContext
+      {{- if and .Values.volumes_enable.enabled .Values.securityContextDataValue.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContextDataValue.securityContext.runAsUser }}
+      {{- else if and .Values.volumes_enable.enabled .Values.containerSecurityContextDataValue.securityContext.runAsUser }}
+        fsGroup: {{ .Values.containerSecurityContextDataValue.securityContext.runAsUser }}
+      {{- end }}
+
+
+      containers:
+        - name: {{ .Values.appName }}
+
+          #podsecurtiy
+          {{- with .Values.containerSecurityContextDataValue }}                              
+            {{- toYaml .  | nindent 10 }}
+          {{- end }}
+
+          # image
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.container_port }}
+              protocol: TCP
+
+          # startupProbe
+          {{- with .Values.startupProbedataValue }}          
+          {{- toYaml .  | nindent 10 }}
+          {{- end }}
+          # readinessProbe
+          {{- with .Values.readinessProbedataValue }}          
+          {{- toYaml .  | nindent 10 }}
+          {{- end }}
+          # livenessProbe
+          {{- with .Values.livenessProbedataValue }}          
+          {{- toYaml .  | nindent 10 }}
+          {{- end }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          # env
+          {{- with .Values.envDataValue }}          
+            {{- toYaml .  | nindent 10 }}
+          {{- end }}
+
+          # command
+          {{- with .Values.commandDataValue }}          
+            {{- toYaml .  | nindent 10 }}
+          {{- end }}  
+
+          #podLifeCycleDataValue
+          {{- with .Values.podLifeCycleDataValue }}          
+            {{- toYaml .  | nindent 10 }}
+          {{- end }}  
+
+           
+
+
+          # container volume
+          {{- if .Values.volumes_enable.enabled  }}
+            {{- with .Values.podVolumesDataValue }}      
+              {{- toYaml . | nindent 10 }}
+            {{- end }}
+          {{- end }}
+
+
+          
+      # nodeSelector          
+      {{- with .Values.nodeSelectorDataValue }}      
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+
+      #terminationGPSDataValue:
+      {{- with .Values.terminationGPSDataValue }}          
+        {{- toYaml .  | nindent 6 }}
+      {{- end }} 
+      
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      #! {{- with .Values.tolerations }}
+      #! tolerations:
+      #!   {{- toYaml . | nindent 8 }}
+      #! {{- end }}
+  {{- if .Values.strategy.bluegreen_enabled.enabled }}
+  strategy:
+    blueGreen:
+      activeService: {{ include "my-test.fullname" . }}
+      previewService: {{ include "my-test.fullname" . }}-preview
+      autoPromotionEnabled: {{ .Values.strategy.bluegreen_enabled.autoPromotionEnabled }}       
+  {{- end }}      
+
+
+{{- end }}
+
+

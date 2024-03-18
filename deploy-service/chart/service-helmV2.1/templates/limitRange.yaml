@@ -1,0 +1,14 @@
+{{- if .Values.limitRange.enabled }}
+
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: {{ include "my-test.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+
+    {{- with .Values.limitRange.limitRangeDataValue }}
+    {{- toYaml .  | nindent 2 }}
+    {{- end }} 
+
+{{- end }}    

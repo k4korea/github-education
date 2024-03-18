@@ -1,0 +1,37 @@
+apps:
+  gitlab:
+    enabled: false
+    project: addons
+    path: charts/gitlab
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: addons
+    servername: null
+    autoSync: null
+
+
+
+  nginx:
+    enabled: true
+    project: addons
+    path: charts/nginx
+    repoURL: null
+    targetRevision: null
+    valueFiles: null
+    namespace: addons
+    servername: null
+    autoSync: null
+
+default:
+  app:
+    project: null
+    path: null
+    repoURL: https://gitlab.aiops-mz.com/su/su-project.git
+    targetRevision: HEAD
+    valueFiles: values.yaml
+    namespace: null
+    servername: in-cluster
+    autoSync: false
+
+

@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: "0.0.1"
+name: originnode
+type: application
+#chart version
+version: 0.1.1

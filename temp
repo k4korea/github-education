@@ -1,0 +1,19 @@
+docker build -t demo-flask-signup:latest .
+docker run -p 8080:80 --rm --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY demo-flask-signup:latest
+
+
+pip3 install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org pipenv -vvv
+
+
+
+
+
+
+
+git clone https://git-codecommit.us-east-2.amazonaws.com/v1/repos/virtlet-front
+
+
+
+
+###### vscode 
+

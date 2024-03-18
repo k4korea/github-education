@@ -1,0 +1,25 @@
+{
+        "containerDefinitions": [
+            {
+                "environment": [], 
+                "name": "flask-signup", 
+                "links": [], 
+                "mountPoints": [], 
+                "image": "sebsto/signup-flask-nginx-docker:v_%BUILD_NUMBER%", 
+                "essential": true, 
+                "portMappings": [
+                    {
+                        "hostPort": 80,
+                        "containerPort": 80
+                    }
+                ], 
+                "entryPoint": [], 
+                "memory": 256, 
+                "command": [], 
+                "cpu": 10, 
+                "volumesFrom": []
+            }
+        ], 
+        "family": "flask-signup",
+        "volumes" :[]
+}

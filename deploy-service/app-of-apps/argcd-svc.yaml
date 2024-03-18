@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: argo-cd
+    meta.helm.sh/release-namespace: argocd
+  creationTimestamp: "2022-10-19T04:14:42Z"
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/instance: argo-cd
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+    helm.sh/chart: argo-cd-5.6.0
+  name: argocd-server-svc
+  namespace: argocd
+  resourceVersion: "511667"
+  uid: b4f178c1-4b21-4453-98cf-0db354b25701
+spec:
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: server
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: server
+  selector:
+    app.kubernetes.io/instance: argo-cd
+    app.kubernetes.io/name: argocd-server
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}

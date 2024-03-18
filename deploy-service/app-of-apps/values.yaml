@@ -1,0 +1,48 @@
+apps:
+  nodejs:
+    enabled:        true
+    project:        default
+    path:           charts/service-helmV1
+    repoURL:        null
+    targetRevision: null
+    valueFiles:     ../../service/nodejs/dev/values.yaml
+    namespace:      test
+    servername:     null
+    autoSync:       null
+    
+
+  virtlet:
+    enabled:        true
+    project:        default
+    path:           charts/service-helm
+    repoURL:        null
+    targetRevision: null
+    valueFiles:     ../../service/virtlet/dev/values.yaml
+    namespace:      "virt"
+    servername:     null
+    autoSync:       null
+  
+  virtlet-rollback:
+    enabled:        true
+    project:        default
+    path:           charts/service-helm
+    repoURL:        null
+    targetRevision: null
+    valueFiles:     ../../service/virtlet-rollback/dev/values.yaml
+    namespace:      "virt"
+    servername:     null
+    autoSync:       null     
+
+default:
+  app:
+    project:        null
+    path:           null
+    #repoURL:        https://gitlab.aiops-mz.com/su/su-project.git
+    repoURL:        git@github.com:k4korea/su-project-2023-appofapps.git
+    targetRevision: HEAD
+    valueFiles:     values.yaml
+    namespace:      null
+    servername:     "in-cluster"
+    autoSync:       false
+
+# 
