@@ -1,8 +1,8 @@
 # github-education
 
-# AWS CodeSeries 
+## AWS CodeSeries 
 
- ## 실습을 속도있게 정확히 끝내는 방법
+ ### 실습을 속도있게 정확히 끝내는 방법
  - Workshop 의 단어를 동일한 단어로 사용
  -  "-", "_" , " " 공간을 재확인
  - typing 보다는 Copy & Paste
@@ -12,19 +12,22 @@
  - Cloud9 을 Public subnet에 배포
  - CodeCommit, Cloudformation, VPC, EC2 페이지 순서대로 켜두고 작업
 
- ## debugging 
-   ### codebuild BuildSpec 에러
+ ### AWS CodeSeries debugging 
+   #### codebuild BuildSpec 에러
    
      ㄱ. buildspec 파일사용 선택
           Buildspec 이름에  빈공간
         
      ㄴ. yaml  , yml 사용의 확장자 확인 
      ㄷ. settings.xml 
+        # code
           <url>https://unicorns-<본인계정ID>.d.codeartifact.us-east-2.amazonaws.com/maven/unicorn-packages/</url>
-
           <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
+        code end !
  
-   ### codedeploy ec2 debugging 
+   #### codedeploy ec2 debugging 
+
+   
      ㄱ. EC2 instance 연결 -> Session Manager -> bash -> ps -ef | grep codedeploy
      ㄴ. codedeploy log : less /var/log/aws/codedeploy-agent/codedeploy-agent.log
      ㄷ. 에러메시지 정리 사이트 
