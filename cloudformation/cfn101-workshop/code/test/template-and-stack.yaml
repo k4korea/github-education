@@ -1,0 +1,12 @@
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+
+# aws cloudformation create-stack --stack-name cfn-workshop-template-and-stack --template-body file://template-and-stack.yaml
+              

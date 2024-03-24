@@ -56,10 +56,3 @@ iam-test
         }
     ]
 }
-
-AWSCloudFormationFullAccess	AWS 관리형	직접
-AWSCodeCommitFullAccess
-
-
-iam-develop
-
