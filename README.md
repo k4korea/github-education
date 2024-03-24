@@ -1,4 +1,4 @@
-![image](https://github.com/k4korea/github-education/assets/30616772/731ec7e3-03b0-4cb8-b516-922680138287)# github-education
+# github-education
 
 # AWS CodeSeries 
 
@@ -13,16 +13,18 @@
  - CodeCommit, Cloudformation, VPC, EC2 페이지 순서대로 켜두고 작업
 
  ## debugging 
-   codebuild BuildSpec 에러 
+   ### codebuild BuildSpec 에러
+   
      ㄱ. buildspec 파일사용 선택
-        Buildspec 이름에  빈공간
+          Buildspec 이름에  빈공간
+        
      ㄴ. yaml  , yml 사용의 확장자 확인 
      ㄷ. settings.xml 
           <url>https://unicorns-<본인계정ID>.d.codeartifact.us-east-2.amazonaws.com/maven/unicorn-packages/</url>
 
           <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
  
-   codedeploy ec2 debugging 
+   ### codedeploy ec2 debugging 
      ㄱ. EC2 instance 연결 -> Session Manager -> bash -> ps -ef | grep codedeploy
      ㄴ. codedeploy log : less /var/log/aws/codedeploy-agent/codedeploy-agent.log
      ㄷ. 에러메시지 정리 사이트 
@@ -35,6 +37,8 @@
          ii. script/install_dependencies.sh, start_server.sh, stop_server.sh 실행권한이 있어야 함. 
               chmod +x ./script/
          iii. 
+
+       ![image](https://github.com/k4korea/github-education/assets/30616772/731ec7e3-03b0-4cb8-b516-922680138287)
 
 
          
