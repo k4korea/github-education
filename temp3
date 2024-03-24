@@ -1,0 +1,65 @@
+# github-education
+
+
+iam-test
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:*",
+                "autoscaling:*",
+                "eks:*",
+                "ecr:*",
+                "sts:*",
+                "s3:*",
+                "ssm:*",
+                "iam:GetRole",
+                "iam:PassRole",
+                "iam:ListRolePolicies",
+                "iam:CreatePolicy",
+                "iam:DeletePolicy",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:ListPolicyVersions",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:GetInstanceProfile",
+                "iam:CreateInstanceProfile",
+                "iam:DeleteInstanceProfile",
+                "iam:RemoveRoleFromInstanceProfile",
+                "iam:AddRoleToInstanceProfile",
+                "iam:ListAttachedRolePolicies",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:ListInstanceProfilesForRole",
+                "iam:CreateOpenIDConnectProvider",
+                "iam:DeleteOpenIDConnectProvider",
+                "iam:GetOpenIDConnectProvider",
+                "iam:TagRole",
+                "iam:TagInstanceProfile",
+                "iam:TagOpenIDConnectProvider",
+                "iam:TagPolicy",
+                "acm-pca:*",
+                "elasticloadbalancing:*",
+                "cloudformation:*",
+                "access-analyzer:*",
+                "iam:CreatePolicyVersion",
+                "iam:UpdateAssumeRolePolicy",
+                "route53:ChangeResourceRecordSets",
+                "route53:ListResourceRecordSets",
+                "route53:ListHostedZones"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+AWSCloudFormationFullAccess	AWS 관리형	직접
+AWSCodeCommitFullAccess
+
+
+iam-develop
+
