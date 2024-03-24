@@ -18,8 +18,9 @@
      ㄱ. buildspec 파일사용 선택
           Buildspec 이름에  빈공간
         
-     ㄴ. yaml  , yml 사용의 확장자 확인 
-     ㄷ. settings.xml 
+     ㄴ. yaml, yml 사용의 확장자 확인 
+     ㄷ. settings.xml 의 AWS 계정확인 
+     
         # code
           <url>https://unicorns-<본인계정ID>.d.codeartifact.us-east-2.amazonaws.com/maven/unicorn-packages/</url>
           <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
@@ -28,18 +29,18 @@
    #### codedeploy ec2 debugging 
 
    
-     ㄱ. EC2 instance 연결 -> Session Manager -> bash -> ps -ef | grep codedeploy
-     ㄴ. codedeploy log : less /var/log/aws/codedeploy-agent/codedeploy-agent.log
-     ㄷ. 에러메시지 정리 사이트 
-          i.  https://suyeoniii.tistory.com/97
-          ii. https://oops4u.tistory.com/2591
-     ㄹ. codedeploy 권한 문제시 
-         service codedeploy-agent restart
-     ㅁ. yaml file error, file not exists
-         i. appspec.yml, buildspec.yml 상위 Root 경로에 위치
-         ii. script/install_dependencies.sh, start_server.sh, stop_server.sh 실행권한이 있어야 함. 
-              chmod +x ./script/
-         iii. 
+   ㄱ. EC2 instance 연결 -> Session Manager -> bash -> ps -ef | grep codedeploy
+   ㄴ. codedeploy log : less /var/log/aws/codedeploy-agent/codedeploy-agent.log
+   ㄷ. 에러메시지 정리 사이트 
+        i.  https://suyeoniii.tistory.com/97
+        ii. https://oops4u.tistory.com/2591
+   ㄹ. codedeploy 권한 문제시 
+       service codedeploy-agent restart
+   ㅁ. yaml file error, file not exists
+       i. appspec.yml, buildspec.yml 상위 Root 경로에 위치
+       ii. script/install_dependencies.sh, start_server.sh, stop_server.sh 실행권한이 있어야 함. 
+            chmod +x ./script/
+       iii. 
 
        ![image](https://github.com/k4korea/github-education/assets/30616772/731ec7e3-03b0-4cb8-b516-922680138287)
 
