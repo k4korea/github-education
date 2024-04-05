@@ -1,0 +1,19 @@
+### eksctl 
+
+ eksctl site :  
+   https://eksctl.io
+   yaml : 
+   https://eksctl.io/usage/dry-run/
+
+
+helm : 
+   helm site: https://helm.sh
+   helm download : https://github.com/helm/helm/releases
+   => Assert 자신의 os 로 다운
+
+artifacthub:  helm repository
+   https://artifacthub.io/
+
+   
+
+ 
