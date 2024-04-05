@@ -55,6 +55,7 @@ kubectl download
 4. k9s
    edit   e ( edit )
    log    pod => l ( log )
+   openlens 설치: https://github.com/MuhammedKalkan/OpenLens
 
 5. helm
    helm down : helm fetch nginx/nginx  
@@ -71,6 +72,8 @@ https://catalog.us-east-1.prod.workshops.aws/workshops/9c0aa9ab-90a9-44a6-abe1-8
    docker build . -t 
    docker push
    docker images
+
+   kubectl create deployment nginx-project --image=aws addrss .../mycontainer:1.0
 
 7. kubect run my-nginx --image nginx/nginx 
 
