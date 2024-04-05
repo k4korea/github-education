@@ -113,6 +113,9 @@ eksctl utils associate-iam-oidc-provider \
   --set region=us-west-2
   --set vpcId=vpc-0ba10736dba15b2b4
 
+9. microk8s 
+   
+    https://snapcraft.io/docs/installing-snap-on-ubuntu
 
 
  
