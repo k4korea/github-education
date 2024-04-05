@@ -80,8 +80,42 @@ https://catalog.us-east-1.prod.workshops.aws/workshops/9c0aa9ab-90a9-44a6-abe1-8
 8. aws loadbalancer 
 https://catalog.us-east-1.prod.workshops.aws/workshops/9c0aa9ab-90a9-44a6-abe1-8dff360ae428/ko-KR/60-ingress-controller/100-launch-alb
 
+eksctl utils associate-iam-oidc-provider \
+    --region us-west-2 \
+    --cluster development \
+    --approve
 
+    curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
+
+
+    eksctl create iamserviceaccount \
+    --cluster development \
+    --namespace kube-system \
+    --name aws-load-balancer-controller \
+    --attach-policy-arn arn:aws:iam::557269744548:policy/AWSLoadBalancerControllerIAMPolicy \
+    --override-existing-serviceaccounts \
+    --approve
+-- cluster => clustername 
+557269744548 주의
+
+
+
+    helm repo add eks https://aws.github.io/eks-charts
+    helm repo update eks
+
+
+    helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=clustername \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller 
+  
+  --set region=us-west-2
+  --set vpcId=vpc-0ba10736dba15b2b4
 
 
 
  
+
+
+
