@@ -59,6 +59,8 @@ kubectl download
 5. helm
    helm down : helm fetch nginx/nginx  
    helm down : helm fetch nginx/nginx  --version
+   valuse 값 가져오기 : helm get values -n <namespace> 설치한 이름 
+   helm install my-nginx bitnami/nginx 
 
 6. docker 
 
