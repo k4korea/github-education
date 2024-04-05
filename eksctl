@@ -10,6 +10,14 @@ unzip awscliv2.zip
 sudo ./aws/install -i ~/ -b ~/bin/
 sudo ./aws/install -i ~/ -b ~/bin/ --update
 
+### aws confiure 
+root@su eksctl]# aws configure
+AWS Access Key ID [****************FSCT]: 
+AWS Secret Access Key [****************zk5I]: 
+Default region name [us-west-2]: 
+Default output format [json]: 
+ 
+
 ### eksctl 
 
 eksctl create cluster -f ./eksctl-all-kor.yaml
