@@ -1,4 +1,16 @@
+### aws cli
+
+############### AWS CLI 설치 ##################
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+## sudo ./aws/install 전체설치
+## 개인계정설치
+sudo ./aws/install -i ~/ -b ~/bin/
+sudo ./aws/install -i ~/ -b ~/bin/ --update
+
 ### eksctl 
+
+eksctl create cluster -f ./eksctl-all-kor.yaml
 
  eksctl site :  
    https://eksctl.io
