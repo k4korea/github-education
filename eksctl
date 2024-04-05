@@ -14,6 +14,39 @@ helm :
 artifacthub:  helm repository
    https://artifacthub.io/
 
-   
+kubectl download 
+    https://kubernetes.io/docs/tasks/tools/
+     각자에 맞는 os 설치 
+===
+
+1. eks 생성후 확인
+    aws eks list-clusters
+2. eks kubectl 등록
+    aws eks update-kubeconfig --name development 
+3. kubectl get pod -A
+   kubectl get node
+   kubectl get configmap -A
+   kubectl get secret -A
+   kubectl get pv
+   kubectl get pvc -A
+
+4. k9s
+   edit   e ( edit )
+   log    pod => l ( log )
+
+5. helm
+   helm down : helm fetch nginx/nginx  
+   helm down : helm fetch nginx/nginx  --version
+
+6. docker 
+   docker build . -t 
+   docker push
+   docker images
+
+7. kubect run my-nginx --image nginx/nginx 
+
+
+
+
 
  
