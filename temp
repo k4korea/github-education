@@ -6,10 +6,6 @@ pip3 install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-ho
 
 
 
-AKIAYDP65POSOMPCK6S
-
-
-
 git clone https://git-codecommit.us-east-2.amazonaws.com/v1/repos/virtlet-front
 
 
