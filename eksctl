@@ -12,8 +12,8 @@ sudo ./aws/install -i ~/ -b ~/bin/ --update
 
 ### aws confiure 
 root@su eksctl]# aws configure
-AWS Access Key ID [****************FSCT]: 
-AWS Secret Access Key [****************zk5I]: 
+AWS Access Key ID [********************]: 
+AWS Secret Access Key [*******************]: 
 Default region name [us-west-2]: 
 Default output format [json]: 
  
@@ -92,11 +92,11 @@ eksctl utils associate-iam-oidc-provider \
     --cluster development \
     --namespace kube-system \
     --name aws-load-balancer-controller \
-    --attach-policy-arn arn:aws:iam::557269744548:policy/AWSLoadBalancerControllerIAMPolicy \
+    --attach-policy-arn arn:aws:iam::<계정주의>:policy/AWSLoadBalancerControllerIAMPolicy \
     --override-existing-serviceaccounts \
     --approve
 -- cluster => clustername 
-557269744548 주의
+ 주의
 
 
 
